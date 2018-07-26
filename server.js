@@ -36,17 +36,20 @@ if(path == '/style.css'){
   response.setHeader('Content-Type','text/css; charset=utf-8')
   response.write('body{background-color:gray;}h1{color:red;}')
   response.end()
-}else if(path == '/'){
-  response.setHeader('Content-Type','text/html; charset=utf-8')
-  response.write('<DOCTYPE!>'+
-  '<html>'+
-    '<link rel= "stylesheet" href="/style.css">'+
-    '<head></head>'+
-    '<body>'+
-      '<h1>你好</h1>'+
-      '<script src ="/main.js"></script>'+
-    '</body>'+
-  '</html>')
+}else if(path === '/'){
+  var string = fs.readFileSync('./index.html','utf8');
+  var bd = fs.readFileSync('./bd','utf8');
+  string = string.replace('&&&amount&&&',bd);
+  response.write(string)
+  response.end()
+}else if(path === '/pay'){
+  var num = fs.readFileSync('./bd','utf8');
+  var newNum = num -1;
+  var z=fs.writeFileSync('./bd',newNum)
+  response.setHeader('Content-Type','text/javascript; charset=utf-8');
+  response.write(`
+    ${query.callback}.call(undefined,'success')
+  `)
   response.end()
 }else if(path == '/main.js'){
   response.setHeader('Content-Type','text/javascript; charset=utf-8')

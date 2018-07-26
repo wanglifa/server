@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h4>我的余额为<span id="amount">&&&amount&&&</span></h4>
+    <button id="btn">点我付款1元</button>
+    <script>
+        var btn = document.getElementById('btn');
+        var amount = document.getElementById('amount');
+        btn.addEventListener('click',()=>{
+            var script = document.createElement('script');
+            var functionName = 'wanglifa'+parseInt(Math.random()*10000);
+            window[functionName] = function(result){
+                if(result === 'success'){
+                    amount.innerText = amount.innerText -1;
+                }else{
+                    alert('fail')
+                }
+            }
+            script.src = 'http://jack.com:8002/pay?callback='+functionName;
+            document.body.appendChild(script);
+            script.onload = function(e){
+                e.currentTarget.remove();
+                delete window[functionName]
+            }
+            script.onerror = function(e){
+                alert('fail')
+                e.currentTarget.remove();
+                delete window[functionName]
+            }
+        })
+    </script>
+</body>
+</html>
