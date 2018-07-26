@@ -14,7 +14,9 @@
         var amount = document.getElementById('amount');
         btn.addEventListener('click',()=>{
             var script = document.createElement('script');
+            //生成一个callback
             var functionName = 'wanglifa'+parseInt(Math.random()*10000);
+            //设置这个全局函数
             window[functionName] = function(result){
                 if(result === 'success'){
                     amount.innerText = amount.innerText -1;
